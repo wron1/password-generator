@@ -9,15 +9,19 @@ Thank you for checking it out and if you are having any trouble follow the usage
 ## Usage
 
 This is the main page. Click the red 'Generate Password' button to begin.
+
 ![Screenshot 1](assets/img/screenshot1.PNG?raw=true)
 
 Following the click you will be prompted with different choices. Enter in your desired specifications.
+
 ![Screenshot 2](assets/img/screenshot2.PNG?raw=true)
 
 Clicking 'OK' registers as a YES and clicking 'Cancel' registers as a NO. Click according to your specifications.
+
 ![Screenshot 3](assets/img/screenshot3.PNG?raw=true)
 
 Finally you will receive your brand new password. Congratulations!
+
 ![Screenshot 4](assets/img/screenshot4.PNG?raw=true)
 
 
