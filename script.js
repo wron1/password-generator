@@ -1,185 +1,148 @@
 // Assignment Code
+
+var caseUpper = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+var caseLower = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+var caseNumeric = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+var caseSpecial = '!”#$%&’()*+,-./:;<=>?@[\]^_`{|}~'.split('');
+
 var generateBtn = document.querySelector("#generate");
 
-//lowercase, uppercase, numeric, and/or special characters
+var optionsChosenNumber = 0;
+
+var finalPasswordArray = [];
+var finalPassword = [];
+var splicedArray = []
+
+// Single random variable from each array
+var randomUpper = caseUpper[Math.floor(Math.random() * caseUpper.length)]
+var randomLower = caseLower[Math.floor(Math.random() * caseLower.length)]
+var randomNumeric = caseNumeric[Math.floor(Math.random() * caseNumeric.length)]
+var randomSpecial = caseSpecial[Math.floor(Math.random() * caseSpecial.length)]
+
 
 // Write password to the #password input
 function writePassword() {
 
-  var caseUpper = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-  var caseLower = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-  var caseNumeric = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-  var caseSpecial =  	'!”#$%&’()*+,-./:;<=>?@[\]^_`{|}~'.split('');
+    var passwordLength = window.prompt("Enter how long your password should be. Chose between 8 and 128 characters.")
 
-  var finalPasswordArray = [""];
+    // Check to see what the password length is and if it is in the required number length
+    if((passwordLength == null || passwordLength === "")||(Number(passwordLength) < 8) || (Number(passwordLength) > 128)||(isNaN(Number(passwordLength)))){
 
-  var tryAgain
-
-  passwordLength = window.prompt("Enter how long your password should be. Chose between 8 and 128 characters.")
-
-  // Check to see what the password length is and if it is in the required number length
-  if(passwordLength == null || passwordLength === ""){
-
-    tryAgain = window.confirm("Please enter something in the prompt.")
-
-    // Handle the exiting/restarting of the program
-    if(tryAgain === false){
-
-      console.log("ending program");
-      return;
-
-    }else{
-
-      console.log("restarting");
-      writePassword();
+        window.alert("Please try again and this time follow the instructions correctly")
+        writePassword();
 
     }
-
-  }else if((Number(passwordLength) < 8) || (Number(passwordLength) > 128)){
-
-    tryAgain = window.confirm("Pick a number between 8 and 128. Try again?");
-
-    // Handle the exiting/restarting of the program
-    if(tryAgain === false){
-
-      console.log("ending program");
-      return;
-
-    }else{
-
-      console.log("restarting");
-      writePassword();
-
-    }
-
-  }else if((isNaN(Number(passwordLength)))){
-
-    tryAgain = window.confirm("Please chose a number this time. Try again?")
-
-    // Handle the exiting/restarting of the program
-    if(tryAgain === false){
-
-      console.log("ending program");
-      return;
-
-    }else{
-
-      console.log("restarting");
-      writePassword();
-
-    }
-
-  }else{
 
     console.log("Your password will be "+ passwordLength +" digits long");
-    lowercase = window.confirm("Would you like to include lowercase letters?");
 
-  }
+    // Confirm windows to get user input
+    var lowercase = window.confirm("Would you like to include lowercase letters?");
+    var uppercase = window.confirm("Would you like to include uppercase letters?");
+    var numeric = window.confirm("Would you like to include numeric values?");
+    var specialChar = window.confirm("Would you like to include special characters?");
+
+    //lowercase, uppercase, numeric, and/or special characters are chosen
+    if(lowercase){
+
+        // Repeated for each case
+        // Takes a random element from the array and makes sure it exists in the final passwords amongst the randomness
+        finalPasswordArray = finalPasswordArray.concat(caseLower);
+        finalPassword.push(randomLower);
+        // Keeps track of the variables pushed onto the final password, used to keep track of final array length
+        optionsChosenNumber++
+
+    }
+
+    if(uppercase){
+
+        finalPasswordArray = finalPasswordArray.concat(caseUpper);
+        finalPassword.push(randomUpper);
+        optionsChosenNumber++
+
+    }
+
+    if(numeric){
+
+        finalPasswordArray = finalPasswordArray.concat(caseNumeric);
+        finalPassword.push(randomNumeric);
+        optionsChosenNumber++
+
+    }
 
 
+    if(specialChar){
 
-  // Checking all the cases to check which characters/letter types should be included in the password
-  switch(lowercase){
+        finalPasswordArray = finalPasswordArray.concat(caseSpecial);
+        finalPassword.push(randomSpecial);
+        optionsChosenNumber++
 
-    case true:
+    }
 
-      console.log("You are including Lowercase letters");
+    if(!lowercase && !uppercase && !numeric && !specialChar){
 
-      uppercase = window.confirm("Would you like to include uppercase letters?");
+        window.alert("You need to chose atleast one criteria for a password to exist");
+        writePassword();
 
-      finalPasswordArray = finalPasswordArray.concat(caseLower);
+    }
 
-      break;
+    window.alert("Now generating password")
 
-    case false:
+    // Get the final array length
+    var finalArrayLength = passwordLength - optionsChosenNumber;
 
-      console.log("You are excluding Lowercase letters");
+    // Takes an array of all the chosen elements and randomizes it
+    finalPasswordArray = finalPasswordArray.sort(() => 0.5 - Math.random());
 
-      uppercase = window.confirm("Would you like to include uppercase letters?");
+    // Takes that array of randomized elements and shortens it to the length chosen
+    splicedArray = finalPasswordArray.slice(0, finalArrayLength);
 
-      break; 
+    // Adds the shortened randomized array onto the final password which already contains the 1-4 random elements
+    finalPassword = finalPassword.concat(splicedArray);
 
-  }
+    console.log("This is the spliced array "+splicedArray);
+    console.log("This is the number of options chosen "+optionsChosenNumber);
+    console.log("This is the final password without concatanation "+finalPassword);
 
-  switch(uppercase){
+    // Check to see if the actual array length is the same as the desired lenght and if not fix it
+    if(finalPassword.length !== finalArrayLength){
 
-    case true:
+        // This is taking into account the smallest subdivision
+        // Largest length is 128 and the smallest array holds 10
+        
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
+        finalPassword = finalPassword.concat(finalPassword);
 
-      console.log("You are including uppercase letters");
+        finalPassword = finalPassword.slice(0, finalArrayLength + optionsChosenNumber);
 
-      numeric = window.confirm("Would you like to include numeric values?");
+        console.log(finalPassword);
 
-      finalPasswordArray = finalPasswordArray.concat(caseUpper);
+    }
 
-      break;
+    // Retrieves the password box
+    var passwordText = document.querySelector("#password");
 
-    case false:
+    // Sets the password box value equal to the password and removes the commas in the array
+    passwordText.value = finalPassword.join("");
 
-      console.log("You are excluding uppercase letters");
-
-      numeric = window.confirm("Would you like to include numeric values?");
-
-      break; 
-
-  }
-
-  switch(numeric){
-
-    case true:
-
-    console.log("You are including numeric values");
-
-    specialChar = window.confirm("Would you like to include special characters?");
-
-    finalPasswordArray = finalPasswordArray.concat(caseNumeric);
-
-      break;
-
-    case false:
-
-      console.log("You are excluding numeric values");
-
-      specialChar = window.confirm("Would you like to include special characters?");
-
-      break; 
-
-  }
-
-  switch(specialChar){
-
-    case true:
-
-      console.log("You are including special characters");
-
-      finalPasswordArray = finalPasswordArray.concat(caseSpecial);
-
-      console.log("You finished bum")
-      window.alert("Now generating password")
-
-      break;
-
-    case false:
-
-      console.log("You are excluding special characters");
-
-      console.log("You finished bum")
-      window.alert("Now generating password")
-
-      break; 
-
-  }
-
-  // Handle all of the password magic
-
-  finalPasswordArray = finalPasswordArray.sort(() => 0.5 - Math.random());
-
-  let finalPassword = finalPasswordArray.slice(0, passwordLength);
-
-  console.log(finalPassword);
-
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = finalPassword.join("");
+    // Reset values for the next password to be generated
+    finalPasswordArray = [];
+    finalPassword = [];
+    splicedArray = []
+    optionsChosenNumber = 0;
 
 }
 
